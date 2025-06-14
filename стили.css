@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.movie-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.movie-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.subscribe-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.subscriptions-list {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#clear-all {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #ff4444;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#clear-all:hover {
+    background: #cc0000;
+}

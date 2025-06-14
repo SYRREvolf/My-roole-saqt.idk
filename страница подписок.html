@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киносайт - Главная</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-image: url('Снимок 01.PNG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #fff;
+        }
+
+        main {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        header {
+            background: rgba(51, 51, 51, 0.8);
+        }
+
+        .movie-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+    </style>
+</head>
+
+<header>
+    <h1>Мои подписки</h1>
+    <nav>
+        <a href="главная страница.html">На главную<img src="картинка 2.PNG" alt="" width="150" height="100"></a>
+    </nav>
+</header>
+
+<main>
+    <div class="subscriptions-list">
+        <h2>Ваши подписки:</h2>
+        <ul id="subscriptions">
+            <!-- Сюда будут добавляться подписки -->
+        </ul>
+        <button id="clear-all">Очистка</button>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (!currentUser) window.location.href = 'login.html';
+
+        const subscriptionsList = document.getElementById('subscriptions');
+        const clearBtn = document.getElementById('clear-all');
+
+        // Загружаем подписки из профиля пользователя
+        const subscriptions = currentUser.subscriptions || [];
+
+        // Отображаем подписки
+        updateSubscriptionsList();
+
+        // Очистка всех подписок
+        clearBtn.addEventListener('click', function () {
+            currentUser.subscriptions = [];
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // Обновляем список пользователей
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.username === currentUser.username);
+            if (userIndex !== -1) {
+                users[userIndex].subscriptions = [];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            updateSubscriptionsList();
+        });
+
+        function updateSubscriptionsList() {
+            subscriptionsList.innerHTML = '';
+
+            if (currentUser.subscriptions.length === 0) {
+                subscriptionsList.innerHTML = '<li>У вас нет подписок</li>';
+                return;
+            }
+
+            currentUser.subscriptions.forEach(movie => {
+                const li = document.createElement('li');
+                li.textContent = movie;
+                subscriptionsList.appendChild(li);
+            });
+        }
+    });
+</script>
+</body>
+</html>

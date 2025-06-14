@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киносайт - Главная</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #fff;
+        }
+
+        main {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+        }
+
+        header {
+            background: rgba(51, 51, 51, 0.8);
+        }
+
+        .movie-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Фильмы и мультфильмы</h1>
+        <nav>
+            <a href="страница подписок.html"><img src="картинка.PNG" alt="" width="150" height="100"></a>
+            <a href="ВХООД.html"><img src="Снимок321.PNG" alt="" width="150" height="100"></a>
+        </nav>
+    </header>
+
+        <main>
+            <table >
+                <tr>
+                    <td>
+                        <div class="movie-grid"></div>
+                            <!-- Фильм 1 -->
+                            <div class="movie-card">
+                                <img src="Снимок 1.PNG" alt="" width="300" height="400" text="МАЙНКРАФТ">
+                                <button class="subscribe-btn" data-movie="МАЙНКРАФТ">Подписаться</button>
+                            </div></a>
+
+                    <td>
+                        <!-- Фильм 2 -->
+                        <div class="movie-card">
+                            <img src="Снимок 2.PNG" alt="" width="300" height="400" text="Малефисента">
+                            <button class="subscribe-btn" data-movie="Малефисента">Подписаться</button>
+                        </div></a>
+
+                    <td>
+                        <!-- Фильм 3 -->
+                        <div class="movie-card">
+                            <img src="Снимок 3.PNG" alt="" width="300" height="400" text="Викинг Вик">
+                            <button class="subscribe-btn" data-movie="Викинг Вик">Подписаться</button>
+                        </div></a>
+
+                    <td>
+                        <!-- Фильм 4 -->
+                        <div class="movie-card">
+                            <img src="Снимок 4.PNG" alt="" width="300" height="400" text="Колобанга">
+                            <button class="subscribe-btn" data-movie="Колобанга">Подписаться</button>
+                        </div></a>
+                    </td>
+                </tr>
+            </table>
+        </main>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (!currentUser) window.location.href = 'login.html';
+
+                // Загружаем подписки из профиля пользователя
+                let subscriptions = currentUser.subscriptions || [];
+
+                // Обновляем кнопки
+                updateButtons();
+
+                // Обработчики для кнопок подписки
+                document.querySelectorAll('.subscribe-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const movie = this.getAttribute('data-movie');
+
+                        if (subscriptions.includes(movie)) {
+                            // Отписываемся
+                            subscriptions = subscriptions.filter(m => m !== movie);
+                            this.textContent = 'Подписаться';
+                        } else {
+                            // Подписываемся
+                            subscriptions.push(movie);
+                            this.textContent = 'Отписаться';
+                        }
+
+                        // Обновляем подписки в профиле пользователя
+                        currentUser.subscriptions = subscriptions;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                        // Обновляем список пользователей (чтобы подписки сохранялись после выхода)
+                        const users = JSON.parse(localStorage.getItem('users')) || [];
+                        const userIndex = users.findIndex(u => u.username === currentUser.username);
+                        if (userIndex !== -1) {
+                            users[userIndex].subscriptions = subscriptions;
+                            localStorage.setItem('users', JSON.stringify(users));
+                        }
+                    });
+                });
+
+                function updateButtons() {
+                    document.querySelectorAll('.subscribe-btn').forEach(btn => {
+                        const movie = btn.getAttribute('data-movie');
+                        if (subscriptions.includes(movie)) {
+                            btn.textContent = 'Отписаться';
+                        } else {
+                            btn.textContent = 'Подписаться';
+                        }
+                    });
+                }
+            });
+        </script>
+</body>
+</html>
